@@ -16,7 +16,7 @@ import $ from 'jquery';
  * @param {String}      dataName    The key name of jquery data
  * @param {function}    ClassName   The class name
  * @param {boolean}     [shorthand] Check if the shorthand of jquery plugin must be added
- * @param {String|null} dataApiAttr The DOM data attribute name to init the jquery plugin with Data API, NULL to disable
+ * @param {String|null} dataApiAttr The DOM data attribute selector name to init the jquery plugin with Data API, NULL to disable
  */
 export default function (pluginName, dataName, ClassName, shorthand = false, dataApiAttr = null) {
     let old = $.fn[pluginName];
@@ -52,7 +52,7 @@ export default function (pluginName, dataName, ClassName, shorthand = false, dat
     // Data API
     if (null !== dataApiAttr) {
         $(window).on('load', function () {
-            $('[' + dataApiAttr + '="true"]').each(function () {
+            $(dataApiAttr).each(function () {
                 let $this = $(this);
                 $.fn[pluginName].call($this, $this.data());
             });
