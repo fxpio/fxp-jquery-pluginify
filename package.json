@@ -1,0 +1,27 @@
+{
+  "name": "@fxp/jquery-pluginify",
+  "version": "1.0.0",
+  "license": "MIT",
+  "author": "François Pluchino <francois.pluchino@gmail.com>",
+  "contributors": [],
+  "description": "Define the ES2015 classes as Jquery plugins",
+  "keywords": [
+    "ES2015",
+    "class",
+    "jquery",
+    "plugin"
+  ],
+  "homepage": "https://github.com/fxpio/fxp-jquery-pluginify",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fxpio/fxp-jquery-pluginify.git"
+  },
+  "bugs": {
+    "url": "https://github.com/fxpio/fxp-jquery-pluginify/issues"
+  },
+  "engines": {},
+  "main": "js/pluginify.js",
+  "dependencies": {
+    "jquery": "^2.2.0||^3.2.0"
+  }
+}
