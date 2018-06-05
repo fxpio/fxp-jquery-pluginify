@@ -19,14 +19,16 @@ import $ from 'jquery';
  * @param {String|null} dataApiAttr The DOM data attribute selector name to init the jquery plugin with Data API, NULL to disable
  * @param {String}      removeName  The method name to remove the plugin data
  */
-export default function (pluginName, dataName, ClassName, shorthand = false, dataApiAttr = null, removeName = 'destroy') {
+export default function(pluginName, dataName, ClassName, shorthand = false, dataApiAttr = null, removeName = 'destroy') {
     let old = $.fn[pluginName];
 
     $.fn[pluginName] = function(options = {}, ...args) {
-        return this.each((i, element) => {
+        let resFunc,
+            resList;
+
+        resList = this.each((i, element) => {
             let $this = $(element),
-                data = $this.data(dataName),
-                resFunc = undefined;
+                data = $this.data(dataName);
 
             if (typeof options === 'object') {
                 if(!data) {
@@ -35,15 +37,16 @@ export default function (pluginName, dataName, ClassName, shorthand = false, dat
             } else if (typeof options === 'string' && data) {
                 if (data[options]) {
                     resFunc = data[options].apply(data, args);
+                    resFunc = resFunc !== data ? resFunc : undefined;
                 }
 
                 if (options === removeName) {
                     $this.removeData(dataName);
                 }
-
-                return resFunc;
             }
         });
+
+        return 1 === resList.length && undefined !== resFunc ? resFunc : resList;
     };
 
     // Shorthand
