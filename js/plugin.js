@@ -9,6 +9,8 @@
 
 import $ from 'jquery';
 
+let defaultOptions = {};
+
 /**
  * Base class for plugin.
  */
@@ -35,5 +37,24 @@ export default class BasePlugin
         Object.keys(self).forEach(function(key) {
             delete self[key];
         });
+    }
+
+    /**
+     * Set the default options.
+     * The new values are merged with the existing values.
+     *
+     * @param {object} options
+     */
+    static set defaultOptions(options) {
+        defaultOptions = $.extend(true, defaultOptions, options);
+    }
+
+    /**
+     * Get the default options.
+     *
+     * @return {object}
+     */
+    static get defaultOptions() {
+        return defaultOptions;
     }
 }
