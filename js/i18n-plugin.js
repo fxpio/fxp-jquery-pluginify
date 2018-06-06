@@ -9,7 +9,7 @@
 
 import BasePlugin from './plugin';
 
-const LANGUAGES = {};
+let locales = {};
 
 /**
  * Base class for i18n plugin.
@@ -24,24 +24,58 @@ export default class BaseI18nPlugin extends BasePlugin
      * @returns {object} The language configuration
      */
     locale(locale) {
+        let localeKeys;
+
         if (undefined === locale) {
             locale = this.options.locale;
         }
 
-        if (undefined === LANGUAGES[locale]) {
-            locale = 'en';
+        if (undefined === locales[locale]) {
+            localeKeys = Object.keys(locales);
+            locale = localeKeys.length > 0 ? localeKeys[0] : 'en';
         }
 
-        return LANGUAGES[locale];
+        return locales[locale];
     }
 
     /**
-     * Add the language configuration.
+     * Get the map of locales.
+     * The map consists of the key containing the ISO code of the language
+     * and an object containing the translations for each ISO code.
      *
-     * @param {string} locale       The locale code
-     * @param {object} translations The translation messages
+     * Example:
+     * {
+     *     'en': {
+     *         'foo.bar': 'My message'
+     *     }
+     * }
+     *
+     * @param {object} translations The translations map defined in a language ISO code key
      */
-    static addLocale(locale, translations) {
-        LANGUAGES[locale] = translations;
+    static set locales(translations) {
+        let keys, i, val;
+
+        if (typeof translations === 'object') {
+            keys = Object.keys(translations);
+
+            for (i = 0; i < keys.length; ++i) {
+                val = translations[keys[i]];
+
+                if (typeof val === 'object') {
+                    locales[keys[i]] = val;
+                }
+            }
+        }
+    }
+
+    /**
+     * Get the map of locales.
+     * The map consists of the key containing the ISO code of the language
+     * and an object containing the translations for each ISO code.
+     *
+     * @returns {object}
+     */
+    static get locales() {
+        return locales;
     }
 }
