@@ -24,7 +24,7 @@ export default class BasePlugin
      */
     constructor(element, options = {}) {
         this.guid     = $.guid;
-        this.options  = options;
+        this.options  = $.extend(true, {}, defaultOptions, options);
         this.$element = $(element);
     }
 
