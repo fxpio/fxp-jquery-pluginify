@@ -49,6 +49,8 @@ export default function(pluginName, dataName, ClassName, shorthand = false, data
         return 1 === resList.length && undefined !== resFunc ? resFunc : resList;
     };
 
+    $.fn[pluginName].Constructor = ClassName;
+
     // Shorthand
     if(shorthand) {
         $[pluginName] = (options) => $({})[pluginName](options);
