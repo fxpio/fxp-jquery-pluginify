@@ -9,7 +9,7 @@
 
 import $ from 'jquery';
 
-let defaultOptions = {};
+const DEFAULT_OPTIONS = {};
 
 /**
  * Base class for plugin.
@@ -24,7 +24,7 @@ export default class BasePlugin
      */
     constructor(element, options = {}) {
         this.guid     = $.guid;
-        this.options  = $.extend(true, {}, defaultOptions, options);
+        this.options  = $.extend(true, {}, this.constructor.defaultOptions, options);
         this.$element = $(element);
     }
 
@@ -46,7 +46,7 @@ export default class BasePlugin
      * @param {object} options
      */
     static set defaultOptions(options) {
-        defaultOptions = $.extend(true, defaultOptions, options);
+        DEFAULT_OPTIONS[this.name] = $.extend(true, DEFAULT_OPTIONS[this.name], options);
     }
 
     /**
@@ -55,6 +55,10 @@ export default class BasePlugin
      * @return {object}
      */
     static get defaultOptions() {
-        return defaultOptions;
+        if (undefined === DEFAULT_OPTIONS[this.name]) {
+            DEFAULT_OPTIONS[this.name] = {};
+        }
+
+        return DEFAULT_OPTIONS[this.name];
     }
 }

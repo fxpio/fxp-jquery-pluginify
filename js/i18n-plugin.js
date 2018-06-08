@@ -9,7 +9,7 @@
 
 import BasePlugin from './plugin';
 
-let locales = {};
+const LOCALES = {};
 
 /**
  * Base class for i18n plugin.
@@ -30,12 +30,12 @@ export default class BaseI18nPlugin extends BasePlugin
             locale = this.options.locale;
         }
 
-        if (undefined === locales[locale]) {
-            localeKeys = Object.keys(locales);
+        if (undefined === this.constructor.locales[locale]) {
+            localeKeys = Object.keys(this.constructor.locales);
             locale = localeKeys.length > 0 ? localeKeys[0] : 'en';
         }
 
-        return locales[locale];
+        return this.constructor.locales[locale];
     }
 
     /**
@@ -62,7 +62,11 @@ export default class BaseI18nPlugin extends BasePlugin
                 val = translations[keys[i]];
 
                 if (typeof val === 'object') {
-                    locales[keys[i]] = val;
+                    if (undefined === LOCALES[this.name]) {
+                        LOCALES[this.name] = {};
+                    }
+
+                    LOCALES[this.name][keys[i]] = val;
                 }
             }
         }
@@ -76,6 +80,10 @@ export default class BaseI18nPlugin extends BasePlugin
      * @returns {object}
      */
     static get locales() {
-        return locales;
+        if (undefined === LOCALES[this.name]) {
+            LOCALES[this.name] = {};
+        }
+
+        return LOCALES[this.name];
     }
 }
