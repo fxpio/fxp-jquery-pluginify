@@ -30,6 +30,14 @@ export default class BaseI18nPlugin extends BasePlugin
             locale = this.options.locale;
         }
 
+        if (undefined !== locale) {
+            locale = locale.toLowerCase().replace('-', '_');
+        }
+
+        if (locale.indexOf('_') >= 0 && undefined === this.constructor.locales[locale]) {
+            locale = locale.substr(0, locale.indexOf('_'));
+        }
+
         if (undefined === this.constructor.locales[locale]) {
             localeKeys = Object.keys(this.constructor.locales);
             locale = localeKeys.length > 0 ? localeKeys[0] : 'en';
