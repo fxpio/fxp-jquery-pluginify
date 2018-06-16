@@ -30,11 +30,12 @@ export default function(pluginName, dataName, ClassName, shorthand = false, data
             let $this = $(element),
                 data = $this.data(dataName);
 
-            if (typeof options === 'object') {
-                if(!data) {
-                    $this.data(dataName, new ClassName(element, options));
-                }
-            } else if (typeof options === 'string' && data) {
+            if (!data) {
+                data = new ClassName(element, typeof options === 'object' ? options : {});
+                $this.data(dataName, data);
+            }
+
+            if (typeof options === 'string' && data) {
                 if (data[options]) {
                     resFunc = data[options].apply(data, args);
                     resFunc = resFunc !== data ? resFunc : undefined;
