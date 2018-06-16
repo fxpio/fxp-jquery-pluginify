@@ -94,4 +94,22 @@ export default class BaseI18nPlugin extends BasePlugin
 
         return LOCALES[this.name];
     }
+
+    /**
+     * @inheritDoc
+     */
+    static get defaultOptions() {
+        return super.defaultOptions;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    static set defaultOptions(options) {
+        if (undefined === options.locale) {
+            options.locale = null;
+        }
+
+        super.defaultOptions = options;
+    }
 }
