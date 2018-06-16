@@ -72,6 +72,9 @@ export default class BaseI18nPlugin extends BasePlugin
     static set locales(translations) {
         let keys, i, val;
 
+        // Force the initialisation of i18n options
+        this.defaultOptions = {};
+
         if (typeof translations === 'object') {
             keys = Object.keys(translations);
 
