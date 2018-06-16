@@ -11,6 +11,8 @@ import BasePlugin from './plugin';
 
 const LOCALES = {};
 
+let globalLocale;
+
 /**
  * Base class for i18n plugin.
  */
@@ -24,22 +26,29 @@ export default class BaseI18nPlugin extends BasePlugin
      * @returns {object} The language configuration
      */
     locale(locale) {
-        let localeKeys;
-
-        if (undefined === locale) {
+        if (!locale) {
             locale = this.options.locale;
+
+            if (!locale) {
+                if (undefined === globalLocale) {
+                    let lang = document.querySelector('html').lang;
+                    globalLocale = lang ? lang : null;
+                }
+
+                locale = globalLocale;
+            }
         }
 
-        if (undefined !== locale) {
+        if (typeof locale === 'string') {
             locale = locale.toLowerCase().replace('-', '_');
-        }
 
-        if (locale.indexOf('_') >= 0 && undefined === this.constructor.locales[locale]) {
-            locale = locale.substr(0, locale.indexOf('_'));
+            if (locale.indexOf('_') >= 0 && undefined === this.constructor.locales[locale]) {
+                locale = locale.substr(0, locale.indexOf('_'));
+            }
         }
 
         if (undefined === this.constructor.locales[locale]) {
-            localeKeys = Object.keys(this.constructor.locales);
+            let localeKeys = Object.keys(this.constructor.locales);
             locale = localeKeys.length > 0 ? localeKeys[0] : 'en';
         }
 
