@@ -39,6 +39,9 @@ export default function(pluginName, dataName, ClassName, shorthand = false, data
                 if (data[options]) {
                     resFunc = data[options].apply(data, args);
                     resFunc = resFunc !== data ? resFunc : undefined;
+                } else if (data.constructor[options]) {
+                    resFunc = data.constructor[options].apply(data, args);
+                    resFunc = resFunc !== data ? resFunc : undefined;
                 }
 
                 if (options === removeName) {
