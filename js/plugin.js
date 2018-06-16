@@ -46,7 +46,7 @@ export default class BasePlugin
      * @param {object} options
      */
     static set defaultOptions(options) {
-        DEFAULT_OPTIONS[this.name] = $.extend(true, DEFAULT_OPTIONS[this.name], options);
+        DEFAULT_OPTIONS[this.name] = $.extend(true, {}, DEFAULT_OPTIONS[this.name], options);
     }
 
     /**
