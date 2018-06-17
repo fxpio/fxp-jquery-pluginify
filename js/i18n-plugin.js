@@ -26,17 +26,35 @@ export default class BaseI18nPlugin extends BasePlugin
      * @returns {object} The language configuration
      */
     locale(locale) {
+        return this.constructor.locales[this.getLocale(locale)];
+    }
+
+    /**
+     * Get the valid available locale.
+     *
+     * @param {string} [locale] The ISO code of language
+     *
+     * @returns {object} The language configuration
+     */
+    getLocale(locale) {
+        locale = locale ? locale : this.options.locale;
+
+        if (this.constructor.locales[locale]) {
+            return locale;
+        }
+
         if (!locale) {
-            locale = this.options.locale;
-
-            if (!locale) {
-                if (undefined === globalLocale) {
-                    let lang = document.querySelector('html').lang;
-                    globalLocale = lang ? lang : null;
-                }
-
-                locale = globalLocale;
+            if (undefined === globalLocale) {
+                let metaLang = document.querySelector('head > meta[http-equiv="Content-Language"]');
+                globalLocale = metaLang && metaLang.content ? metaLang.content : null;
             }
+
+            if (undefined === globalLocale) {
+                let lang = document.querySelector('html').lang;
+                globalLocale = lang ? lang : null;
+            }
+
+            locale = globalLocale;
         }
 
         if (typeof locale === 'string') {
@@ -52,7 +70,9 @@ export default class BaseI18nPlugin extends BasePlugin
             locale = localeKeys.length > 0 ? localeKeys[0] : 'en';
         }
 
-        return this.constructor.locales[locale];
+        this.options.locale = locale;
+
+        return locale;
     }
 
     /**
